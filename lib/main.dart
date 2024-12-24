@@ -1,10 +1,12 @@
+import 'package:coffeeshopapp/Mongo/mongo_server.dart';
 import 'package:coffeeshopapp/pages/start/start_page.dart';
 import 'package:flutter/services.dart' as services;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoServer.connect();
   runApp(const MyApp());
 }
 
@@ -37,7 +39,48 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home: const StartPage(),
+      // home: const StartPage(),
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 20,
+            children: [
+              Text("I am here"),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  print('I am pressed');
+                  await MongoServer.insertOne();
+                  // await MongoServer.insertOne({
+                  //   'name': 'Americano',
+                  //   'price': 3.79,
+                  //   'rating': 4.3,
+                  // });
+                },
+              ),
+              TextButton(
+                onPressed: () async {
+                  await MongoServer.connect();
+                },
+                child: Text('again'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await MongoServer.addOrder();
+                },
+                child: Text('add to orders'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await MongoServer.getTotal();
+                },
+                child: Text('get total orders'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
