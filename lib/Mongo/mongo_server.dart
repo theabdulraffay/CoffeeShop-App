@@ -47,6 +47,19 @@ class MongoServer {
 
   //----------------------------------------------------------------------------------------
 
+  static Future<void> modifyOrderQuantity(ObjectId order, int quantity) async {
+    try {
+      await ordersCollection.updateOne({
+        'product_id': order
+      }, {
+        '\$inc': {'quantity': quantity}
+      });
+    } catch (e) {
+      log('Error incrementing order quantity: ${e.toString()}',
+          name: 'Order Error');
+    }
+  }
+
   static Future<void>? getTotal() async {
     var result = await userCollection.aggregate([
       {

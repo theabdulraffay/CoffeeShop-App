@@ -1,3 +1,5 @@
+import 'package:coffeeshopapp/bloc/movie/bloc/barrel.dart';
+import 'package:coffeeshopapp/bloc/orders/bloc/order_bloc.dart';
 import 'package:coffeeshopapp/models/order_model.dart';
 import 'package:coffeeshopapp/pages/delivery/delivery_page.dart';
 import 'package:coffeeshopapp/pages/order/widgets.dart/order_tile.dart';
@@ -18,8 +20,9 @@ class _OrderPageState extends State<OrderPage> {
   bool isPickedUp = false;
   int orderAmount = 1;
 
-  double getTotalOrderAmount() {
+  double getTotalOrderAmount(List<OrderModel> orderList) {
     double amount = 0;
+
     for (var order in orderList) {
       amount += order.product.productPrice * order.orderAmount;
     }
@@ -27,27 +30,29 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void updateOrder(OrderModel updatedOrder) {
+    
+    
     // Update the order in the list
-    setState(() {
-      orderList[orderList.indexOf(updatedOrder)] = updatedOrder;
-    });
+    // setState(() {
+      // orderList[orderList.indexOf(updatedOrder)] = updatedOrder;
+    // });
   }
 
   void removeOrder(OrderModel removedOrder) {
     // Remove the order from the list
-    setState(() {
-      orderList.remove(removedOrder);
-    });
+    // setState(() {
+    //   orderList.remove(removedOrder);
+    // });
 
-    if (orderList.isEmpty) {
-      setState(() {
-        const snackBar = SnackBar(
-          content: Text('Order cart is empty'),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.pop(context);
-      });
-    }
+    // if (orderList.isEmpty) {
+    //   setState(() {
+    //     const snackBar = SnackBar(
+    //       content: Text('Order cart is empty'),
+    //     );
+    //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //     Navigator.pop(context);
+    //   });
+    // }
   }
 
   @override
@@ -96,10 +101,10 @@ class _OrderPageState extends State<OrderPage> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              isDelivered = true;
-                              isPickedUp = false;
-                            });
+                            // setState(() {
+                            //   isDelivered = true;
+                            //   isPickedUp = false;
+                            // });
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -125,10 +130,10 @@ class _OrderPageState extends State<OrderPage> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              isDelivered = false;
-                              isPickedUp = true;
-                            });
+                            // setState(() {
+                            //   isDelivered = false;
+                            //   isPickedUp = true;
+                            // });
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -170,18 +175,23 @@ class _OrderPageState extends State<OrderPage> {
                 fontWeight: "Regular",
               ),
               const SizedBox(height: 10),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: orderList.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return OrderTile(
-                    order: orderList[index],
-                    onUpdateOrder: updateOrder,
-                    onRemoveOrder: removeOrder,
+              BlocBuilder<OrderBloc, OrderState>(
+                builder: (context, state) {
+                  List<OrderModel> orderList = state.listOfOrders;
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: orderList.length,
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const SizedBox(height: 10);
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return OrderTile(
+                        order: orderList[index],
+                        onUpdateOrder: updateOrder,
+                        onRemoveOrder: removeOrder,
+                      );
+                    },
                   );
                 },
               ),
@@ -228,9 +238,13 @@ class _OrderPageState extends State<OrderPage> {
                     fontWeight: "Regular",
                   ),
                   const Spacer(),
-                  Font(
-                    text: "\$${getTotalOrderAmount()}",
-                    fontSize: 14,
+                  BlocBuilder<OrderBloc, OrderState>(
+                    builder: (context, state) {
+                      return Font(
+                        text: "\$${getTotalOrderAmount(state.listOfOrders)}",
+                        fontSize: 14,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -268,9 +282,13 @@ class _OrderPageState extends State<OrderPage> {
                     fontWeight: "Regular",
                   ),
                   const Spacer(),
-                  Font(
-                    text: "\$${getTotalOrderAmount() + 1}",
-                    fontSize: 14,
+                  BlocBuilder<OrderBloc, OrderState>(
+                    builder: (context, state) {
+                      return Font(
+                                      text: "\$${getTotalOrderAmount(state.listOfOrders) + 1}",
+                                      fontSize: 14,
+                                    );
+                    },
                   ),
                 ],
               ),
@@ -330,10 +348,14 @@ class _OrderPageState extends State<OrderPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
-                          child: Font(
-                            text: "\$${getTotalOrderAmount() + 1}",
-                            fontSize: 12,
-                            fontWeight: "Regular",
+                          child: BlocBuilder<OrderBloc, OrderState>(
+                            builder: (context, state) {
+                              return Font(
+                                                      text: "\$${getTotalOrderAmount(state.listOfOrders) + 1}",
+                                                      fontSize: 12,
+                                                      fontWeight: "Regular",
+                                                    );
+                            },
                           ),
                         ),
                       ],
@@ -346,33 +368,39 @@ class _OrderPageState extends State<OrderPage> {
                   )
                 ]),
                 const SizedBox(height: 20),
-                InkWell(
-                  highlightColor: primaryTapColor,
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () {
-                    orderList.clear();
-                    const snackBar = SnackBar(
-                      content: Text('Order completed!'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DeliveryPage(),
-                        ));
+                BlocListener<OrderBloc, OrderState>(
+                  listener: (context, state) {
+                    if (state.status == Status.initial) {
+                      var snackBar = SnackBar(
+                        content: Text(state.message),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DeliveryPage(),
+                          ));
+                    }
                   },
-                  child: Ink(
-                    width: screenWidth,
-                    decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Font(
-                        text: "Order",
-                        color: primaryTextColorLight,
-                        textAlign: "Center",
+                  child: InkWell(
+                    highlightColor: primaryTapColor,
+                    borderRadius: BorderRadius.circular(15),
+                    onTap: () {
+                      context.read<OrderBloc>().add(ClearOrderEvent());
+                    },
+                    child: Ink(
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Font(
+                          text: "Order",
+                          color: primaryTextColorLight,
+                          textAlign: "Center",
+                        ),
                       ),
                     ),
                   ),

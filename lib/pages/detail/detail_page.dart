@@ -1,8 +1,6 @@
 import 'package:coffeeshopapp/bloc/orders/bloc/order_bloc.dart';
-import 'package:coffeeshopapp/models/order_model.dart';
 import 'package:coffeeshopapp/models/product_model.dart';
 import 'package:coffeeshopapp/pages/detail/widgets/size_tile.dart';
-import 'package:coffeeshopapp/pages/order/order_page.dart';
 import 'package:coffeeshopapp/utils/constants.dart';
 import 'package:coffeeshopapp/utils/enums.dart';
 import 'package:coffeeshopapp/utils/font.dart';
@@ -247,12 +245,17 @@ class _DetailPageState extends State<DetailPage> {
                   listener: (context, state) {
                     if (state.status == Status.success) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Added to the cart')));
+                        SnackBar(
+                          content: Text(state.message),
+                          showCloseIcon: true,
+                        ),
+                      );
                       Navigator.pop(context);
                     }
                     if (state.status == Status.avalible) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Already added to the Cart')));
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(state.message)));
+                      Navigator.pop(context);
                     }
                   },
                   child: BlocBuilder<OrderBloc, OrderState>(

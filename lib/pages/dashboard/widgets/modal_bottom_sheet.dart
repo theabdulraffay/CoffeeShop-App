@@ -21,12 +21,9 @@ class CustomModalButtomSheet extends StatelessWidget {
       child: Column(
         spacing: 20,
         children: [
-          customTextFormField(
-              message: 'Name of the product', controller: nameController),
-          customTextFormField(
-              message: 'TagLine of the product', controller: tagController),
-          customTextFormField(
-              message: 'Price of the product', controller: priceController),
+          customTextFormField(message: 'Name', controller: nameController),
+          customTextFormField(message: 'TagLine', controller: tagController),
+          customTextFormField(message: 'Price', controller: priceController),
           BlocBuilder<CoffeeBloc, CoffeeState>(
             builder: (context, state) {
               return ElevatedButton(

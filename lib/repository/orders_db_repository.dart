@@ -9,4 +9,12 @@ class OrdersDbRepository {
     };
     await MongoServer.addOrder(result);
   }
+
+  Future<void> incrementQuantity(OrderModel model) async {
+    await MongoServer.modifyOrderQuantity(model.product.id!, 1);
+  }
+
+  Future<void> decrementQuantity(OrderModel model) async {
+    await MongoServer.modifyOrderQuantity(model.product.id!, -1);
+  }
 }

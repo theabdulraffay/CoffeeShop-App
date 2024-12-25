@@ -2,6 +2,7 @@ import 'package:coffeeshopapp/bloc/movie/bloc/coffee_bloc.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/modal_bottom_sheet.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/product_tile.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/scroll_tile.dart';
+import 'package:coffeeshopapp/pages/order/order_page.dart';
 import 'package:coffeeshopapp/utils/constants.dart';
 import 'package:coffeeshopapp/utils/enums.dart';
 import 'package:coffeeshopapp/utils/font.dart';
@@ -316,7 +317,15 @@ class _DashboardPageState extends State<DashboardPage> {
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
             selectedItemColor: primaryColor,
-            onTap: (int index) {},
+            onTap: (int index) {
+              if (index == 1) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OrderPage(),
+                    ));
+              }
+            },
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
