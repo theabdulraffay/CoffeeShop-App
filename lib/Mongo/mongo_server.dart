@@ -60,6 +60,21 @@ class MongoServer {
     }
   }
 
+  //----------------------------------------------------------------------------------------
+
+  static Future<void> deleteOrder(ObjectId id) async {
+    await ordersCollection.deleteOne({'product_id': id});
+  }
+
+  //----------------------------------------------------------------------------------------
+
+  static Future<bool> clearData() async {
+    var res = await ordersCollection.drop();
+    log('$res', name: 'clearData');
+    return res;
+  }
+  //----------------------------------------------------------------------------------------
+
   static Future<void>? getTotal() async {
     var result = await userCollection.aggregate([
       {

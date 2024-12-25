@@ -11,10 +11,12 @@ class OrderTile extends StatefulWidget {
     required this.order,
     required this.onUpdateOrder,
     required this.onRemoveOrder,
+    required this.decrementOrder,
   });
 
   OrderModel order;
   final Function(OrderModel) onUpdateOrder;
+  final Function(OrderModel) decrementOrder;
   final Function(OrderModel) onRemoveOrder;
 
   @override
@@ -52,14 +54,12 @@ class _OrderTileState extends State<OrderTile> {
         const Spacer(),
         GestureDetector(
           onTap: () {
-            setState(() {
-              if (widget.order.orderAmount > 1) {
-                widget.order.orderAmount--;
-                widget.onUpdateOrder(widget.order);
-              } else {
-                widget.onRemoveOrder(widget.order);
-              }
-            });
+            if (widget.order.orderAmount > 1) {
+              widget.order.orderAmount--;
+              widget.decrementOrder(widget.order);
+            } else {
+              widget.onRemoveOrder(widget.order);
+            }
           },
           child: Container(
             decoration: BoxDecoration(
@@ -79,10 +79,8 @@ class _OrderTileState extends State<OrderTile> {
         const SizedBox(width: 20),
         GestureDetector(
           onTap: () {
-            setState(() {
-              widget.order.orderAmount++;
-              widget.onUpdateOrder(widget.order);
-            });
+            widget.order.orderAmount++;
+            widget.onUpdateOrder(widget.order);
           },
           child: Container(
             decoration: BoxDecoration(

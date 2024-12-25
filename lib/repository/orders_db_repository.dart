@@ -17,4 +17,12 @@ class OrdersDbRepository {
   Future<void> decrementQuantity(OrderModel model) async {
     await MongoServer.modifyOrderQuantity(model.product.id!, -1);
   }
+
+  Future<void> deleteOrder(OrderModel model) async {
+    await MongoServer.deleteOrder(model.product.id!);
+  }
+
+  Future<bool> clearDatabase() async {
+    return await MongoServer.clearData();
+  }
 }

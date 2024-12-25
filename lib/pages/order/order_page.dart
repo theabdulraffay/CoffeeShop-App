@@ -30,29 +30,17 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void updateOrder(OrderModel updatedOrder) {
-    
-    
-    // Update the order in the list
-    // setState(() {
-      // orderList[orderList.indexOf(updatedOrder)] = updatedOrder;
-    // });
+    context
+        .read<OrderBloc>()
+        .add(IncrementOrderEvent(orderModel: updatedOrder));
+  }
+
+  void decrementOrder(OrderModel model) {
+    context.read<OrderBloc>().add(DecrementOrderEvent(orderModel: model));
   }
 
   void removeOrder(OrderModel removedOrder) {
-    // Remove the order from the list
-    // setState(() {
-    //   orderList.remove(removedOrder);
-    // });
-
-    // if (orderList.isEmpty) {
-    //   setState(() {
-    //     const snackBar = SnackBar(
-    //       content: Text('Order cart is empty'),
-    //     );
-    //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    //     Navigator.pop(context);
-    //   });
-    // }
+    context.read<OrderBloc>().add(RemoveOrder(orderModel: removedOrder));
   }
 
   @override
@@ -190,6 +178,7 @@ class _OrderPageState extends State<OrderPage> {
                         order: orderList[index],
                         onUpdateOrder: updateOrder,
                         onRemoveOrder: removeOrder,
+                        decrementOrder: decrementOrder,
                       );
                     },
                   );
@@ -285,9 +274,10 @@ class _OrderPageState extends State<OrderPage> {
                   BlocBuilder<OrderBloc, OrderState>(
                     builder: (context, state) {
                       return Font(
-                                      text: "\$${getTotalOrderAmount(state.listOfOrders) + 1}",
-                                      fontSize: 14,
-                                    );
+                        text:
+                            "\$${getTotalOrderAmount(state.listOfOrders) + 1}",
+                        fontSize: 14,
+                      );
                     },
                   ),
                 ],
@@ -351,10 +341,11 @@ class _OrderPageState extends State<OrderPage> {
                           child: BlocBuilder<OrderBloc, OrderState>(
                             builder: (context, state) {
                               return Font(
-                                                      text: "\$${getTotalOrderAmount(state.listOfOrders) + 1}",
-                                                      fontSize: 12,
-                                                      fontWeight: "Regular",
-                                                    );
+                                text:
+                                    "\$${getTotalOrderAmount(state.listOfOrders) + 1}",
+                                fontSize: 12,
+                                fontWeight: "Regular",
+                              );
                             },
                           ),
                         ),
@@ -388,6 +379,10 @@ class _OrderPageState extends State<OrderPage> {
                     borderRadius: BorderRadius.circular(15),
                     onTap: () {
                       context.read<OrderBloc>().add(ClearOrderEvent());
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeliveryPage()));
                     },
                     child: Ink(
                       width: screenWidth,

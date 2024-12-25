@@ -23,3 +23,8 @@ class DecrementOrderEvent extends OrderEvent {
   final OrderModel orderModel;
   const DecrementOrderEvent({required this.orderModel});
 }
+
+class RemoveOrder extends OrderEvent {
+  final OrderModel orderModel;
+  const RemoveOrder({required this.orderModel});
+}
