@@ -26,6 +26,7 @@ class Font extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      overflow: TextOverflow.ellipsis,
       style: GoogleFonts.sora(
           color: color,
           fontSize: fontSize,

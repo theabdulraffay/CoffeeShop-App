@@ -39,12 +39,13 @@ class _OrderTileState extends State<OrderTile> {
         ),
         const SizedBox(width: 10),
         Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Font(text: widget.order.product.productName),
             const SizedBox(height: 5),
             Font(
-              text: widget.order.product.productTagLine,
+              text: '${widget.order.product.productTagLine}...',
               fontSize: 12,
               fontWeight: "Regular",
               color: secondaryTextColor,
@@ -52,45 +53,49 @@ class _OrderTileState extends State<OrderTile> {
           ],
         ),
         const Spacer(),
-        GestureDetector(
-          onTap: () {
-            if (widget.order.orderAmount > 1) {
-              widget.order.orderAmount--;
-              widget.decrementOrder(widget.order);
-            } else {
-              widget.onRemoveOrder(widget.order);
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: borderColor),
-                borderRadius: BorderRadius.circular(100)),
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: SvgPicture.asset('assets/icons/minus.svg'),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                if (widget.order.orderAmount > 1) {
+                  widget.order.orderAmount--;
+                  widget.decrementOrder(widget.order);
+                } else {
+                  widget.onRemoveOrder(widget.order);
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: borderColor),
+                    borderRadius: BorderRadius.circular(100)),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SvgPicture.asset('assets/icons/minus.svg'),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(width: 20),
-        Font(
-          text: '${widget.order.orderAmount}',
-          fontSize: 14,
-        ),
-        const SizedBox(width: 20),
-        GestureDetector(
-          onTap: () {
-            widget.order.orderAmount++;
-            widget.onUpdateOrder(widget.order);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: borderColor),
-                borderRadius: BorderRadius.circular(100)),
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: SvgPicture.asset('assets/icons/plus.svg'),
+            const SizedBox(width: 20),
+            Font(
+              text: '${widget.order.orderAmount}',
+              fontSize: 14,
             ),
-          ),
+            const SizedBox(width: 20),
+            GestureDetector(
+              onTap: () {
+                widget.order.orderAmount++;
+                widget.onUpdateOrder(widget.order);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: borderColor),
+                    borderRadius: BorderRadius.circular(100)),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SvgPicture.asset('assets/icons/plus.svg'),
+                ),
+              ),
+            )
+          ],
         )
       ],
     );
