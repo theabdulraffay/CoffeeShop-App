@@ -1,9 +1,12 @@
+import 'package:coffeeshopapp/bloc/movie/bloc/coffee_bloc.dart';
 import 'package:coffeeshopapp/models/product_model.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/product_tile.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/scroll_tile.dart';
 import 'package:coffeeshopapp/utils/constants.dart';
+import 'package:coffeeshopapp/utils/enums.dart';
 import 'package:coffeeshopapp/utils/font.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,6 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
+    context.read<CoffeeBloc>().add(const FetchCoffeeEvent());
   }
 
   @override
@@ -248,19 +252,33 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  MasonryGridView.count(
-                      // key: UniqueKey(),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(0),
-                      crossAxisCount: gridCount(),
-                      crossAxisSpacing: 15, //
-                      mainAxisSpacing: 15,
-                      itemCount: allProducts.length,
-                      itemBuilder: (context, index) {
-                        final product = allProducts[index];
-                        return ProductTile(product: product);
-                      }),
+                  BlocBuilder<CoffeeBloc, CoffeeState>(
+                      builder: (context, state) {
+                    if (state.status == Status.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state.status == Status.error) {
+                      return Center(
+                          child: Font(
+                              text: state.message,
+                              fontSize: 16,
+                              color: Colors.red));
+                    } else {
+                      var allProducts = state.products;
+                      return MasonryGridView.count(
+                          // key: UniqueKey(),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(0),
+                          crossAxisCount: gridCount(),
+                          crossAxisSpacing: 15, //
+                          mainAxisSpacing: 15,
+                          itemCount: allProducts.length,
+                          itemBuilder: (context, index) {
+                            final product = allProducts[index];
+                            return ProductTile(product: product);
+                          });
+                    }
+                  })
                 ],
               ),
             ),

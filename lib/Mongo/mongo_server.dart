@@ -1,39 +1,29 @@
 // import 'dart:developer';
 import 'dart:developer';
-
 import 'package:mongo_dart/mongo_dart.dart';
-
-String host = '127.0.0.1';
-String port = '27017';
 
 class MongoServer {
   static late Db db;
   static late DbCollection userCollection;
   static late DbCollection ordersCollection;
+
+  //----------------------------------------------------------------------------------------
+
   static Future<void> connect() async {
     try {
       db = Db('mongodb://localhost:27017/coffee_app');
       await db.open();
-      print(db.isConnected);
+      log('db.isConnected: ${db.isConnected}',
+          name: 'MongoServer', time: DateTime.now());
       userCollection = db.collection('inventory');
       ordersCollection = db.collection('orders');
-      print('hehe');
-      // var da = (await userCollection.find().first);
-      // print(da);
-      // userCollection.insertOne({
-      //   'name': 'Americano',
-      //   'price': 3.79,
-      //   'rating': 4.3,
-      // });
-      // userCollection.deleteOne({'name': 'Americano'});
-      // userCollection.find().forEach((map) {
-      //   print(map);
-      // });
-      // print(userCollection);
     } catch (e) {
-      print("Error: $e");
+      log("Error: $e");
     }
   }
+
+  //----------------------------------------------------------------------------------------
+  static Stream<Map<String, dynamic>> getAllMovies() => userCollection.find();
 
   static Future<void> insertOne([var db, Map<String, dynamic>? data]) async {
     // if (db == null || !db.isConnected) {
