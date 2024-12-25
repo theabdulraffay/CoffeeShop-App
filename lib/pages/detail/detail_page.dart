@@ -26,17 +26,17 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     bool isLargeDescription() {
-      if (widget.product.productDescription.length >= 150) {
+      if (widget.product.productDescription!.length >= 150) {
         return true;
       }
       return false;
     }
 
     // isReadMoreTapped = _isLargeDescription() ? false : true;
-    String description = isReadMoreTapped
+    String? description = isReadMoreTapped
         ? widget.product.productDescription
         : isLargeDescription()
-            ? '${widget.product.productDescription.substring(0, 147)}...'
+            ? '${widget.product.productDescription!.substring(0, 147)}...'
             : widget.product.productDescription;
     double screenWidth = MediaQuery.of(context).size.width;
 

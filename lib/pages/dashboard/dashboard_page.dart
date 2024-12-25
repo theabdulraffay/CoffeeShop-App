@@ -1,5 +1,5 @@
 import 'package:coffeeshopapp/bloc/movie/bloc/coffee_bloc.dart';
-import 'package:coffeeshopapp/models/product_model.dart';
+import 'package:coffeeshopapp/pages/dashboard/widgets/modal_bottom_sheet.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/product_tile.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/scroll_tile.dart';
 import 'package:coffeeshopapp/utils/constants.dart';
@@ -61,6 +61,20 @@ class _DashboardPageState extends State<DashboardPage> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryTapColor,
+        onPressed: () {
+          showModalBottomSheet<void>(
+              context: context,
+              builder: (context) {
+                return CustomModalButtomSheet();
+              });
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(

@@ -10,3 +10,8 @@ sealed class CoffeeEvent extends Equatable {
 class FetchCoffeeEvent extends CoffeeEvent {
   const FetchCoffeeEvent();
 }
+
+class AddnewProductEvent extends CoffeeEvent {
+  final ProductModel productModel;
+  const AddnewProductEvent(this.productModel);
+}

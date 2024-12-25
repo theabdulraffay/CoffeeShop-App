@@ -10,7 +10,8 @@ class ProductModelDbReposiotry {
     }).toList();
   }
 
-  Future<void> addProductModel(ProductModel ProductModel) async {
+  Future<void> addProductModel(ProductModel productModel) async {
+    await MongoServer.insertOne(productModel.toJson());
     // Add data to database
   }
 

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class ProductModel extends Equatable {
-  final ObjectId id;
+  final ObjectId? id;
   final String productImage;
   final String productName;
   final String productTagLine;
@@ -11,13 +11,14 @@ class ProductModel extends Equatable {
   final double productRating;
 
   const ProductModel({
-    required this.id,
-    required this.productImage,
+    this.id,
+    this.productImage = 'coffee-1.png',
     required this.productName,
     required this.productTagLine,
-    required this.productDescription,
+    this.productDescription =
+        'A cappuccino is an approximately 150 ml (5 oz) beverage, with 25 ml of espresso coffee and 85ml of fresh milk the for the perfect taste',
     required this.productPrice,
-    required this.productRating,
+    this.productRating = 3.8,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {

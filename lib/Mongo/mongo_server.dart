@@ -25,34 +25,17 @@ class MongoServer {
   //----------------------------------------------------------------------------------------
   static Stream<Map<String, dynamic>> getAllMovies() => userCollection.find();
 
-  static Future<void> insertOne([var db, Map<String, dynamic>? data]) async {
-    // if (db == null || !db.isConnected) {
-    //   log('Database is not connected. Call connect() first.',
-    //       name: 'MongoServer');
-    //   return;
-    // }
-    // userCollection = db.collection('inventory');
+  //----------------------------------------------------------------------------------------
 
+  static Future<void> insertOne(Map<String, dynamic> data) async {
     try {
-      userCollection.find().forEach((map) {
-        print(map);
-      });
-      // userCollection.aggregate([
-      //   {
-      //     "\$lookup": {
-      //       "from": "products",
-      //       "localField": "userId",
-      //       "foreignField": "userId",
-      //       "as": "userProducts"
-      //     }
-      //   }
-      // ]);
-      // var result = await userCollection.insertOne(data);
-      // log('Insert result: $result', name: 'MongoServer');
+      await userCollection.insertOne(data);
     } catch (e) {
       log('Insert error: ${e.toString()}', name: 'MongoServer');
     }
   }
+
+  //----------------------------------------------------------------------------------------
 
   static Future<void>? addOrder() async {
     userCollection.find().forEach((map) async {
@@ -64,7 +47,6 @@ class MongoServer {
   }
 
   static Future<void>? getTotal() async {
-    int total = 0;
     var result = await userCollection.aggregate([
       {
         '\$lookup': {
