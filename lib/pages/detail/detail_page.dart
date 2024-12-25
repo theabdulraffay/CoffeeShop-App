@@ -1,11 +1,14 @@
+import 'package:coffeeshopapp/bloc/orders/bloc/order_bloc.dart';
 import 'package:coffeeshopapp/models/order_model.dart';
 import 'package:coffeeshopapp/models/product_model.dart';
 import 'package:coffeeshopapp/pages/detail/widgets/size_tile.dart';
 import 'package:coffeeshopapp/pages/order/order_page.dart';
 import 'package:coffeeshopapp/utils/constants.dart';
+import 'package:coffeeshopapp/utils/enums.dart';
 import 'package:coffeeshopapp/utils/font.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -175,10 +178,10 @@ class _DetailPageState extends State<DetailPage> {
                                   fontWeight: FontWeight.w600),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  setState(() {
-                                    print('yes');
-                                    isReadMoreTapped = true;
-                                  });
+                                  // setState(() {
+                                  //   print('yes');
+                                  //   isReadMoreTapped = true;
+                                  // });
                                 })
                           : const TextSpan(),
                     ],
@@ -240,34 +243,55 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
                 const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    bool isProductAlreadyInOrderList = orderList
-                        .any((order) => order.product == widget.product);
-                    // If the product is not already in the order list, add it
-                    if (!isProductAlreadyInOrderList) {
-                      orderList.add(
-                          OrderModel(product: widget.product, orderAmount: 1));
+                BlocBuilder<OrderBloc, OrderState>(
+                  builder: (context, state) {
+                    // if (state.status == Status.success) {
+                    //   Navigator.pop(context);
+                    // }
+                    var avalible = state.listOfOrders
+                        .any((val) => val.product == widget.product);
+                    if (avalible) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(content: Text('data')));
                     }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OrderPage()),
+                    return GestureDetector(
+                      onTap: () {
+                        if (!avalible) {
+                          context
+                              .read<OrderBloc>()
+                              .add(AddOrderEvent(productModel: widget.product));
+                        }
+                        // bool isProductAlreadyInOrderList = orderList
+                        //     .any((order) => order.product == widget.product);
+                        // // If the product is not already in the order list, add it
+                        // if (!isProductAlreadyInOrderList) {
+                        //   orderList.add(OrderModel(
+                        //       product: widget.product, orderAmount: 1));
+                        // }
+
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const OrderPage()),
+                        // );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 70, vertical: 19),
+                          child: state.status == Status.loading
+                              ? const CircularProgressIndicator()
+                              : Font(
+                                  text: "Buy Now",
+                                  color: primaryTextColorLight,
+                                ),
+                        ),
+                      ),
                     );
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 70, vertical: 19),
-                      child: Font(
-                        text: "Buy Now",
-                        color: primaryTextColorLight,
-                      ),
-                    ),
-                  ),
                 )
               ]),
             ),

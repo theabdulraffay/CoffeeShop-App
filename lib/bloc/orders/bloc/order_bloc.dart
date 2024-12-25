@@ -16,12 +16,12 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<AddOrderEvent>(_addOrder);
   }
 
-  void _addOrder(AddOrderEvent event, Emitter<OrderState> emit) {
+  void _addOrder(AddOrderEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(
       status: Status.loading,
     ));
     orders = [...state.listOfOrders, OrderModel(product: event.productModel)];
-    ordersDbRepository.addOrder(orders.last).then((val) {
+    await ordersDbRepository.addOrder(orders.last).then((val) {
       emit(state.copyWith(
         status: Status.success,
         listOfOrders: orders,

@@ -1,4 +1,5 @@
 import 'package:coffeeshopapp/Mongo/mongo_server.dart';
+import 'package:coffeeshopapp/bloc/orders/bloc/order_bloc.dart';
 import 'package:coffeeshopapp/pages/start/start_page.dart';
 import 'package:flutter/services.dart' as services;
 import 'package:flutter/material.dart';
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
         overlays: [services.SystemUiOverlay.top]);
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CoffeeBloc>(create: (context) => CoffeeBloc()),
+        BlocProvider<CoffeeBloc>(create: (_) => CoffeeBloc()),
+        BlocProvider<OrderBloc>(create: (_) => OrderBloc()),
       ],
       child: MaterialApp(
         title: 'Coffee Application',
