@@ -92,7 +92,7 @@ class MongoServer {
         },
       }
     ]);
-    print(result);
+    log('$result');
   }
   // static Future<void> close() async {
   //   if (db != null && db!.isConnected) {

@@ -382,7 +382,7 @@ class _OrderPageState extends State<OrderPage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DeliveryPage()));
+                              builder: (context) => const DeliveryPage()));
                     },
                     child: Ink(
                       width: screenWidth,
