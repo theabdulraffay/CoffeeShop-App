@@ -14,12 +14,4 @@ class ProductModelDbReposiotry {
     await MongoServer.insertOne(productModel.toJson());
     // Add data to database
   }
-
-  Future<void> updateProductModel(ProductModel ProductModel) async {
-    // Update data in database
-  }
-
-  Future<void> deleteProductModel(ProductModel ProductModel) async {
-    // Delete data from database
-  }
 }

@@ -37,14 +37,15 @@ class MongoServer {
 
   //----------------------------------------------------------------------------------------
 
-  static Future<void>? addOrder() async {
-    userCollection.find().forEach((map) async {
-      await ordersCollection.insertOne({
-        'new_id': map['_id'] as ObjectId,
-        'name': map['product_name'],
-      });
-    });
+  static Future<void>? addOrder(Map<String, dynamic> map) async {
+    try {
+      await ordersCollection.insertOne(map);
+    } catch (e) {
+      log('Error adding order ${e.toString()}', name: 'Order Error');
+    }
   }
+
+  //----------------------------------------------------------------------------------------
 
   static Future<void>? getTotal() async {
     var result = await userCollection.aggregate([
