@@ -243,55 +243,48 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
                 const Spacer(),
-                BlocBuilder<OrderBloc, OrderState>(
-                  builder: (context, state) {
-                    // if (state.status == Status.success) {
-                    //   Navigator.pop(context);
-                    // }
-                    var avalible = state.listOfOrders
-                        .any((val) => val.product == widget.product);
-                    if (avalible) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text('data')));
+                BlocListener<OrderBloc, OrderState>(
+                  listener: (context, state) {
+                    if (state.status == Status.success) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Added to the cart')));
+                      Navigator.pop(context);
                     }
-                    return GestureDetector(
-                      onTap: () {
-                        if (!avalible) {
+                    if (state.status == Status.avalible) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Already added to the Cart')));
+                    }
+                  },
+                  child: BlocBuilder<OrderBloc, OrderState>(
+                    builder: (context, state) {
+                      // if (state.status == Status.success) {
+                      //   Navigator.pop(context);
+                      // }
+
+                      return GestureDetector(
+                        onTap: () {
                           context
                               .read<OrderBloc>()
                               .add(AddOrderEvent(productModel: widget.product));
-                        }
-                        // bool isProductAlreadyInOrderList = orderList
-                        //     .any((order) => order.product == widget.product);
-                        // // If the product is not already in the order list, add it
-                        // if (!isProductAlreadyInOrderList) {
-                        //   orderList.add(OrderModel(
-                        //       product: widget.product, orderAmount: 1));
-                        // }
-
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const OrderPage()),
-                        // );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: BorderRadius.circular(16)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 70, vertical: 19),
-                          child: state.status == Status.loading
-                              ? const CircularProgressIndicator()
-                              : Font(
-                                  text: "Buy Now",
-                                  color: primaryTextColorLight,
-                                ),
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 66, vertical: 16),
+                            child: state.status == Status.loading
+                                ? const CircularProgressIndicator()
+                                : Font(
+                                    text: "Buy Now",
+                                    color: primaryTextColorLight,
+                                  ),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 )
               ]),
             ),
