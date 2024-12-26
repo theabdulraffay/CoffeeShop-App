@@ -76,23 +76,35 @@ class MongoServer {
   //----------------------------------------------------------------------------------------
 
   static Future<void>? getTotal() async {
-    var result = await userCollection.aggregate([
-      {
-        '\$lookup': {
-          'from': 'orders',
-          "localField": "_id",
-          "foreignField": "new_id",
-          "as": "userProducts"
+    try {
+      var result = await ordersCollection.aggregate([
+        {
+          '\$lookup': {
+            'from': "inventory", // The target collection to join with
+            'localField': "product_id", // The field in the ordersCollection
+            'foreignField': "_id", // The field in the inventory collection
+            'as':
+                "userProducts", // The name of the new array field containing matched documents
+          },
         },
-      },
-      {
-        "\$project": {
-          "product_name": 1,
-          "product_price": 1,
+        {
+          '\$unwind':
+              "\$userProducts", // Optional: If you want a flat structure (one order per document)
         },
-      }
-    ]);
-    log('$result');
+        {
+          '\$project': {
+            "product_name":
+                "\$userProducts.product_name", // Accessing the joined field
+            "product_price":
+                "\$userProducts.product_price", // Accessing the joined field
+            "quantity": 1, // Including fields from the orders collection
+          },
+        },
+      ]);
+      log('$result', name: 'Success');
+    } catch (e) {
+      log(e.toString(), name: 'Error');
+    }
   }
   // static Future<void> close() async {
   //   if (db != null && db!.isConnected) {

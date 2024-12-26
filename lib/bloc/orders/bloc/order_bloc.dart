@@ -92,7 +92,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   void _removeOrder(RemoveOrder event, Emitter<OrderState> emit) async {
     orders.remove(event.orderModel);
-    orders.remove(event.orderModel);
     await ordersDbRepository.deleteOrder(event.orderModel).then((val) {
       emit(state.copyWith(
           status: Status.success, message: 'Success', listOfOrders: orders));

@@ -1,3 +1,4 @@
+import 'package:coffeeshopapp/Mongo/mongo_server.dart';
 import 'package:coffeeshopapp/bloc/movie/bloc/coffee_bloc.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/modal_bottom_sheet.dart';
 import 'package:coffeeshopapp/pages/dashboard/widgets/product_tile.dart';
@@ -64,12 +65,13 @@ class _DashboardPageState extends State<DashboardPage> {
       backgroundColor: backgroundColor,
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryTapColor,
-        onPressed: () {
-          showModalBottomSheet<void>(
+        onPressed: () async {
+          await showModalBottomSheet<void>(
               context: context,
               builder: (context) {
                 return CustomModalButtomSheet();
               });
+          // await MongoServer.getTotal();
         },
         child: const Icon(
           Icons.add,

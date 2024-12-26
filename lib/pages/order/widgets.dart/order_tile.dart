@@ -45,7 +45,7 @@ class _OrderTileState extends State<OrderTile> {
             Font(text: widget.order.product.productName),
             const SizedBox(height: 5),
             Font(
-              text: '${widget.order.product.productTagLine}...',
+              text: widget.order.product.productTagLine,
               fontSize: 12,
               fontWeight: "Regular",
               color: secondaryTextColor,
