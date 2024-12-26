@@ -1,17 +1,4 @@
-import 'package:coffeeshopapp/Mongo/mongo_server.dart';
-import 'package:coffeeshopapp/bloc/movie/bloc/coffee_bloc.dart';
-import 'package:coffeeshopapp/pages/dashboard/widgets/modal_bottom_sheet.dart';
-import 'package:coffeeshopapp/pages/dashboard/widgets/product_tile.dart';
-import 'package:coffeeshopapp/pages/dashboard/widgets/scroll_tile.dart';
-import 'package:coffeeshopapp/pages/order/order_page.dart';
-import 'package:coffeeshopapp/utils/constants.dart';
-import 'package:coffeeshopapp/utils/enums.dart';
-import 'package:coffeeshopapp/utils/font.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:coffeeshopapp/pages/barrel.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

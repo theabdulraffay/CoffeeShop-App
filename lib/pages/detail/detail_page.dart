@@ -1,20 +1,10 @@
-import 'package:coffeeshopapp/bloc/orders/bloc/order_bloc.dart';
-import 'package:coffeeshopapp/models/product_model.dart';
-import 'package:coffeeshopapp/pages/detail/widgets/size_tile.dart';
-import 'package:coffeeshopapp/utils/constants.dart';
-import 'package:coffeeshopapp/utils/enums.dart';
-import 'package:coffeeshopapp/utils/font.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 // ignore: must_be_immutable
-class DetailPage extends StatefulWidget {
-  DetailPage({super.key, required this.product});
+import 'package:coffeeshopapp/pages/barrel.dart';
 
-  ProductModel product;
+class DetailPage extends StatefulWidget {
+  const DetailPage({super.key, required this.product});
+
+  final ProductModel product;
 
   @override
   State<DetailPage> createState() => _DetailPageState();

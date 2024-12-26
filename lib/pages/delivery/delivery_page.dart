@@ -1,7 +1,4 @@
-import 'package:coffeeshopapp/utils/constants.dart';
-import 'package:coffeeshopapp/utils/font.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:coffeeshopapp/pages/barrel.dart';
 
 class DeliveryPage extends StatelessWidget {
   const DeliveryPage({super.key});

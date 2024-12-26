@@ -1,7 +1,4 @@
-import 'package:coffeeshopapp/pages/dashboard/dashboard_page.dart';
-import 'package:coffeeshopapp/utils/constants.dart';
-import 'package:coffeeshopapp/utils/font.dart';
-import 'package:flutter/material.dart';
+import 'package:coffeeshopapp/pages/barrel.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
